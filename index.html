@@ -62,11 +62,7 @@
           padding: 1.5rem;
           width: 19rem;
           background-color: hsla(240, 15%, 9%, 1);
-          background-image: radial-gradient(
-              at 88% 40%,
-              hsla(240, 15%, 9%, 1) 0px,
-              transparent 85%
-            ),
+          background-image: radial-gradient(at 88% 40%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
             radial-gradient(at 49% 30%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
             radial-gradient(at 14% 26%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
             radial-gradient(at 0% 64%, hsl(189, 99%, 26%) 0px, transparent 85%),
@@ -141,11 +137,7 @@
           cursor: pointer;
           padding: 0.75rem;
           width: 100%;
-          background-image: linear-gradient(
-            0deg,
-            hsl(189, 92%, 58%),
-            hsl(189, 99%, 26%) 100%
-          );
+          background-image: linear-gradient(0deg, hsl(189, 92%, 58%), hsl(189, 99%, 26%) 100%);
           font-size: 0.85rem;
           font-weight: bold;
           color: var(--white);
@@ -159,7 +151,6 @@
             transform: scale(1.02);
         }
 
-         
         .workout-table {
             display: none;
             width: 19rem;
@@ -240,25 +231,49 @@
     <script>
         document.querySelector('.button').addEventListener('click', function() {
             let age = prompt("Step 1: Enter your Age (years):");
-            if (age === null || age.trim() === "") return;
+            if (!age) return;
 
             let weight = prompt("Step 2: Enter your Weight (kg):");
-            if (weight === null || weight.trim() === "") return;
+            if (!weight) return;
 
             let height = prompt("Step 3: Enter your Height (cm):");
-            if (height === null || height.trim() === "") return;
+            if (!height) return
+          
+            age = parseFloat(age);
+            weight = parseFloat(weight);
+            height = parseFloat(height);
 
-            let displayBox = document.getElementById('workoutDisplay');
+             
+            let heightInMeters = height / 100;
+            let bmi = weight / (heightInMeters * heightInMeters);
+
+            let displayBox = document.getElementById('workoutDisplay'); 
             let statsText = document.getElementById('userStatsText');
             let list = document.getElementById('routineList');
+            let title = document.getElementById('routineTitle');
             
-            statsText.innerText = "Target Profile initialized: " + age + " years old, " + weight + " kg, " + height + " cm.";
+            statsText.innerHTML = <b>Profile:</b> ${age} yrs | ${weight} kg | ${height} cm<br><b>BMI:</b> ${bmi.toFixed(1)};
             
-            list.innerHTML = "<li>⚡ 10 Mins Warm-up Run</li>" +
-                             "<li>💪 4 Sets of Bodyweight Squats</li>" +
-                             "<li>🔥 3 Sets of Push-ups (Max Reps)</li>" +
-                             "<li>⏱️ 2 Mins Core Plank Hold</li>" +
-                             "<li>🧘 5 Mins Post-Workout Stretching</li>";
+            // تخصيص التمارين بذكاء حقيقي وحسب الـ BMI والوزن
+            if (bmi < 18.5) {
+                title.innerText = "💪 Muscle Gain Plan (ضخامة وعضل)";
+                list.innerHTML = "<li>🏋️‍♂️ 4 Sets of Heavy Dumbbell Squats</li>" +
+                                 "<li>💪 3 Sets of Pull-ups or Lat Pulldowns</li>" +
+                                 "<li>🔥 4 Sets of Diamond Push-ups</li>" +
+                                 "<li>🍌 Eat 500+ extra calories today!</li>";
+            } else if (bmi >= 18.5 && bmi < 25) {
+                title.innerText = "⚡ Shred & Tone Plan (تقسيم ولياقة)";
+                list.innerHTML = "<li>🏃‍♂️ 15 Mins High-Intensity Cardio (HIIT)</li>" +
+                                 "<li>🏋️‍♂️ 3 Sets of Jump Squats</li>" +
+                                 "<li>🔥 3 Sets of Standard Push-ups</li>" +
+                                 "<li>⏱️ 2 Mins Plank Hold</li>";
+            } else {
+                title.innerText = "🔥 Fat Burn & Cardio Plan (حرق دهون مكثف)";
+                list.innerHTML = "<li>🏃‍♂️ 25 Mins Fast Pace Treadmill Run</li>" +
+                                 "<li>💦 4 Sets of Burpees (12 Reps)</li>" +
+                                 "<li>🚴‍♂️ 10 Mins Stationary Cycling</li>" +
+                                 "<li>🥗 Focus on High Protein & Low Carbs today!</li>";
+            }
             
             displayBox.style.display = "block";
             displayBox.scrollIntoView({ behavior: 'smooth' });
