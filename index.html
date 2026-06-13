@@ -137,7 +137,7 @@
           font-size: 0.85rem;
           color: var(--white);
         }
-        .card .button {
+       .card .button {
           cursor: pointer;
           padding: 0.75rem;
           width: 100%;
@@ -159,7 +159,7 @@
             transform: scale(1.02);
         }
 
-        
+         
         .workout-table {
             display: none;
             width: 19rem;
@@ -239,7 +239,6 @@
 
     <script>
         document.querySelector('.button').addEventListener('click', function() {
-       
             let age = prompt("Step 1: Enter your Age (years):");
             if (age === null || age.trim() === "") return;
 
@@ -249,22 +248,18 @@
             let height = prompt("Step 3: Enter your Height (cm):");
             if (height === null || height.trim() === "") return;
 
-         
             let displayBox = document.getElementById('workoutDisplay');
             let statsText = document.getElementById('userStatsText');
             let list = document.getElementById('routineList');
             
-          
             statsText.innerText = "Target Profile initialized: " + age + " years old, " + weight + " kg, " + height + " cm.";
             
-           
             list.innerHTML = "<li>⚡ 10 Mins Warm-up Run</li>" +
                              "<li>💪 4 Sets of Bodyweight Squats</li>" +
                              "<li>🔥 3 Sets of Push-ups (Max Reps)</li>" +
                              "<li>⏱️ 2 Mins Core Plank Hold</li>" +
                              "<li>🧘 5 Mins Post-Workout Stretching</li>";
             
-           
             displayBox.style.display = "block";
             displayBox.scrollIntoView({ behavior: 'smooth' });
         });
@@ -272,4 +267,3 @@
 
 </body>
 </html>
-        
