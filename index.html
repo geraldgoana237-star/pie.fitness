@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>the way to dream body + mind</title>
+    <title>برنامج اللياقة البدنية المتكامل</title>
     <style>
         :root {
             --primary: #00f2fe;
             --secondary: #4facfe;
             --dark: #0a0f1d;
-            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-bg: rgba(255, 255, 255, 0.04);
         }
 
         * {
@@ -69,7 +69,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1, h2 {
+        h1, h2, h3 {
             text-align: center;
             margin-bottom: 25px;
             background: linear-gradient(135deg, #fff 30%, #a5b4fc 100%);
@@ -100,6 +100,7 @@
             box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
             text-align: center;
             text-decoration: none;
+            margin-top: 10px;
         }
 
         .btn:hover {
@@ -134,16 +135,60 @@
             border-color: var(--primary);
             box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
         }
+
+        /* تنسيق كارت النتائج */
+        .result-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+.result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+        }
+
+        .result-val {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .macros-box {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .macro-item span {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
     </style>
 </head>
 <body>
-   <div class="container">
+
+    <div class="container">
+        <!-- الشاشة 1: الترحيب والبدء -->
         <div id="screen-welcome" class="screen active">
             <h1>برنامج اللياقة المتكامل</h1>
-            <p>أهلاً بك! صمم نظامك الغذائي والتدريبي المخصص بالكامل بناءً على بيانات جسمك وأهدافك الصحية عبر خوارزمياتنا الذكية.</p>
+            <p>أهلاً بك! صمم نظامك الغذائي والتدريبي المخصص بالكامل بناءً على بيانات جسمك وأهدافك الصحية فورياً.</p>
             <button class="btn" onclick="startFitnessLogic()">ابدأ الآن واكتشف خطتك</button>
         </div>
 
+        <!-- الشاشة 2: جمع البيانات -->
         <div id="screen-form" class="screen">
             <h2>معلومات الجسم والهدف</h2>
             <form id="fitness-form" onsubmit="handleFormSubmit(event)">
@@ -164,37 +209,112 @@
                     <select id="goal" required>
                         <option value="تنشيف وخسارة دهون">تنشيف وخسارة دهون</option>
                         <option value="تضخيم وبناء عضلات">تضخيم وبناء عضلات</option>
-                        <option value="المحافظة على الوزن واللياقة">المحافظة على الوزن واللياقة</option>
+                        <option value="المحافظة على الوزن">المحافظة على الوزن واللياقة</option>
                     </select>
                 </div>
-                <button type="submit" class="btn">احصل على خطتك عبر الواتساب</button>
+                <button type="submit" class="btn">احسب خطتي فوراً</button>
             </form>
+        </div>
+
+        <!-- الشاشة 3: عرض النتائج الفورية -->
+        <div id="screen-results" class="screen">
+            <h2>خطتك البدنية المخصصة</h2>
+            
+            <div class="result-card">
+                <div class="result-row">
+                    <span>معدل الأيض الأساسي (BMR):</span>
+                    <span class="result-val" id="res-bmr">0 سعرة</span>
+                </div>
+                <div class="result-row">
+                    <span>احتياجك اليومي المستهدف:</span>
+                    <span class="result-val" id="res-calories" style="font-size: 1.3rem; color: #00f2fe;">0 سعرة</span>
+                </div>
+            </div>
+
+            <h3>تقسيم الماكروز اليومي المقترح:</h3>
+            <div class="macros-box">
+                <div class="macro-item">
+                    <label>بروتين</label>
+                    <span id="macro-protein">0ج</span>
+                </div>
+                <div class="macro-item">
+                    <label>كاربوهيدرات</label>
+                    <span id="macro-carbs">0ج</span>
+                </div>
+                <div class="macro-item">
+                    <label>دهون صحية</label>
+                    <span id="macro-fats">0ج</span>
+                </div>
+            </div>
+           <div class="result-card" style="margin-top: 20px;">
+                <h4 style="color: #cbd5e1; margin-bottom: 8px;">💡 نصيحة الكابتن المخصصة لك:</h4>
+                <p id="res-tip" style="text-align: right; font-size: 0.95rem; color: #94a3b8; margin-bottom: 0;"></p>
+            </div>
+
+            <button class="btn" onclick="restartApp()">إعادة الحساب 🔄</button>
         </div>
     </div>
 
     <script>
-        // دالة الانتقال من الشاشة الأولى إلى شاشة الفورم
         function startFitnessLogic() {
             document.getElementById('screen-welcome').classList.remove('active');
             document.getElementById('screen-form').classList.add('active');
         }
 
-        // دالة معالجة إرسال البيانات وفتح الواتساب مباشرة
         function handleFormSubmit(event) {
-            event.preventDefault(); // منع إعادة تحميل الصفحة
+            event.preventDefault();
             
-            const age = document.getElementById('age').value || "غير محدد";
-            const weight = document.getElementById('weight').value || "غير محدد";
-            const height = document.getElementById('height').value || "غير محدد";
-            const goal = document.getElementById('goal').value || "غير محدد";
+            const age = parseFloat(document.getElementById('age').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const goal = document.getElementById('goal').value;
 
-            const phoneNumber = "9647746356391"; // رقم الواتساب المربوط بالدكمة
+            // معادلة Mifflin-St Jeor لحساب الـ BMR للذكور كمعيار تقريبي
+            const bmr = Math.round((10 * weight) + (6.25 * height) - (5 * age) + 5);
             
-            // صياغة الرسالة التلقائية المرتبة
-            const message = السلام عليكم كابتن، أود الحصول على خطتي البدنية والغذائية المخصصة.%0A%0A📊 *بيانات الجسم المكتملة:*%0A- العمر: ${age} سنة%0A- الوزن: ${weight} كغم%0A- الطول: ${height} سم%0A- الهدف الأساسي: ${goal}%0A%0Aيرجى إرسال تفاصيل الخطة والسعرات المناسبة لي بالاعتماد على هذه البيانات.;
+            // حساب السعرات مع نشاط متوسط ضرب 1.4
+            let maintenanceCalories = Math.round(bmr * 1.4);
+            let targetCalories = maintenanceCalories;
+            let tip = "";
+            let protein = 0, carbs = 0, fats = 0;
 
-            // فتح الرابط المباشر للواتساب
-            window.open(https://wa.me/${phoneNumber}?text=${message}, '_blank');
+            if (goal === "تنشيف وخسارة دهون") {
+                targetCalories = maintenanceCalories - 400; // عجز سعرات للتنشيف
+                protein = Math.round(weight * 2.2); // بروتين عالٍ للمحافظة على العضل
+                fats = Math.round((targetCalories * 0.25) / 9);
+                carbs = Math.round((targetCalories - (protein * 4) - (fats * 9)) / 4);
+                tip = "ركز على تمارين المقاومة الشديدة لحماية كتلتك العضلية أثناء التنشيف، واحرص على شرب ما لا يقل عن 3 لترات من الماء يومياً مع زيادة الكارديو بعد التمرين.";
+            } else if (goal === "تضخيم وبناء عضلات") {
+                targetCalories = maintenanceCalories + 350; // فائض سعرات للتضخيم
+                protein = Math.round(weight * 2.0);
+                fats = Math.round((targetCalories * 0.25) / 9);
+                carbs = Math.round((targetCalories - (protein * 4) - (fats * 9)) / 4);
+                tip = "أنت في مرحلة بناء وتضخيم! طبق مبدأ الزيادة التدريجية في الأحمال (زيادة الأوزان أو التكرارات)، ونم لمدة 7-8 ساعات لمساعدة عضلاتك على الاستشفاء والنمو.";
+            } else {
+                targetCalories = maintenanceCalories; // ثبات
+                protein = Math.round(weight * 1.8);
+                fats = Math.round((targetCalories * 0.25) / 9);
+                carbs = Math.round((targetCalories - (protein * 4) - (fats * 9)) / 4);
+                tip = "هدفك رائع للحفاظ على رشاقتك الحالية وتطوير لياقتك ونشاطك اليومي. واظب على نظامك الحالي مع تنويع مصادر الغذاء والالتزام بتمارينك المعتادة.";
+            }
+
+            // عرض النتائج في الشاشة الثالثة
+            document.getElementById('res-bmr').innerText = bmr + " سعرة";
+            document.getElementById('res-calories').innerText = targetCalories + " سعرة/يوم";
+            document.getElementById('macro-protein').innerText = protein + " جرام";
+            document.getElementById('macro-carbs').innerText = carbs + " جرام";
+            document.getElementById('macro-fats').innerText = fats + " جرام";
+            document.getElementById('res-tip').innerText = tip;
+
+            // الانتقال لشاشة النتائج
+            document.getElementById('screen-form').classList.remove('active');
+            document.getElementById('screen-results').classList.add('active');
+        }
+
+        function restartApp() {
+            document.getElementById('fitness-form').reset();
+            document.getElementById('screen-results').classList.remove('active');
+            document.getElementById('screen-form').classList.add('active');
         }
     </script>
 
